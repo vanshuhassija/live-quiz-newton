@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Input,
   Button,
@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/core";
 import Logo from "../components/Logo";
 import { useInput } from "react-hanger";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { CREATE_USER } from "../lib/mutations";
 import { get } from "lodash";
 import Router, { useRouter } from "next/router";
@@ -19,11 +19,17 @@ import { getCookies, setCookies } from "cookies-next";
 // import PageContainer from '../components/PageContainer';
 import { MdPlayCircleOutline } from "react-icons/md";
 import AppContext from "../context/App";
+import { USERS } from "../lib/queries";
 
 const Home = () => {
   const nameInput = useInput("");
-  const {setUserLoading,setUser}=useContext(AppContext);
+  const { setUserLoading, setUser } = useContext(AppContext);
   const [createUser] = useMutation(CREATE_USER);
+  const {
+    loading: usersLoading,
+    error: usersError,
+    data: allUsers,
+  } = useQuery(USERS);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,22 +42,35 @@ const Home = () => {
   const createPlayer = async () => {
     setIsLoading(true);
 
-    try {
-      const { data: playerData } = await createUser({
-        variables: { user: { name: nameInput.value } },
-      });
-      console.log(playerData);
-      const user = get(playerData, "insert_users.returning.0");
-      setCookies(null, "user-id", user.id, { path: teamPath });
-      setUser(user);
-      setUserLoading(false);
+    const matchingUser = allUsers?.users?.find(
+      (user) =>
+        user?.name?.replaceAll(" ", "")?.toLowerCase() ===
+        nameInput?.value?.replaceAll(" ", "")?.toLowerCase()
+    );
+    console.log("matching user", matchingUser);
+    if (matchingUser) {
+      setCookies(null, "user-id", matchingUser.id, { path: teamPath });
+      setUser(matchingUser);
       const teamPath = `/team`;
-      
+      setUserLoading(false);
       Router.push(teamPath);
-    } catch (err) {
-      console.log("Error",err)
-      setIsLoading(false);
     }
+
+    // try {
+    //   const { data: playerData } = await createUser({
+    //     variables: { user: { name: nameInput.value } },
+    //   });
+    //   const user = get(playerData, "insert_users.returning.0");
+    //   setCookies(null, "user-id", user.id, { path: teamPath });
+    //   setUser(user);
+    //   setUserLoading(false);
+    //   const teamPath = `/team`;
+
+    //   Router.push(teamPath);
+    // } catch (err) {
+    //   console.log("Error",err)
+    //   setIsLoading(false);
+    // }
   };
 
   return (
