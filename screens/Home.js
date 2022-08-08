@@ -55,22 +55,23 @@ const Home = () => {
       setUserLoading(false);
       Router.push(teamPath);
     }
+    else{
+    try {
+      const { data: playerData } = await createUser({
+        variables: { user: { name: nameInput.value } },
+      });
+      const user = get(playerData, "insert_users.returning.0");
+      setCookies(null, "user-id", user.id, { path: teamPath });
+      setUser(user);
+      setUserLoading(false);
+      const teamPath = `/team`;
 
-    // try {
-    //   const { data: playerData } = await createUser({
-    //     variables: { user: { name: nameInput.value } },
-    //   });
-    //   const user = get(playerData, "insert_users.returning.0");
-    //   setCookies(null, "user-id", user.id, { path: teamPath });
-    //   setUser(user);
-    //   setUserLoading(false);
-    //   const teamPath = `/team`;
-
-    //   Router.push(teamPath);
-    // } catch (err) {
-    //   console.log("Error",err)
-    //   setIsLoading(false);
-    // }
+      Router.push(teamPath);
+    } catch (err) {
+      console.log("Error",err)
+      setIsLoading(false);
+    }
+    }
   };
 
   return (
