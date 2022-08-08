@@ -5,11 +5,13 @@ import User from "./User";
 import { withApollo } from "../lib/apollo";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./Navbar";
 
 const PageContainer = ({ children }) => {
  
   return (
     <Box bg="background" w="100vw" h="100vh">
+      <Navbar/>
       <Box zIndex={1}>
       <Toaster />
        {children}

@@ -8,7 +8,8 @@ import {
   Heading,
   Text,
   Image,
-  Alert, AlertDescription
+  Alert,
+  AlertDescription,
 } from "@chakra-ui/core";
 import Logo from "../components/Logo";
 import { useInput } from "react-hanger";
@@ -63,11 +64,18 @@ const Team = () => {
         className="giphy-embed"
         allowFullScreen
       ></iframe>
-      <Alert status="info" mt={4}>
-        <AlertDescription>
-          Further details will be shared soon!
-        </AlertDescription>
-      </Alert>
+      <Button
+      mt={4}
+        color="buttonText"
+        border="1px"
+        variantColor="primary"
+        rightIcon={MdPlayCircleOutline}
+        onClick={()=>{
+            Router.push("/quiz")
+        }}
+      >
+        Enter Quiz
+      </Button>
     </Stack>
   );
 };
