@@ -4,8 +4,9 @@ import React from 'react';
 
 const Rules = () => {
     return (
-        <Stack maxHeight="90vh" overflowY="scroll">
+        <Stack >
             <Heading>Rules:</Heading>
+            <Stack maxHeight="90vh" overflowY="scroll">
             <Text color="gray.500">The rules of the quiz are really simple.</Text>
             <Text>1. Do not cheat. If caught cheating, your whole team will be disqualified.</Text>
             <Text>The quiz will be around HTML,CSS and Javascript.</Text>
@@ -47,6 +48,7 @@ const Rules = () => {
                 <li><Text>The teams with no participation in a particular round, will be eliminated straight away.</Text></li>
                 <li><Text>Teams with less scores will be eliminated.</Text></li>
             </ul>
+            </Stack>
         </Stack>
     );
 };

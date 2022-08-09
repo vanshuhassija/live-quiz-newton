@@ -13,11 +13,10 @@ const Leaderboard = () => {
   if (leaderboardLoading) {
     return <Loader />;
   }
-  console.log("Teams are", teams);
   return (
     <Stack>
       <Heading>Leaderboard</Heading>
-      <Box mt={4}>
+      <Box mt={4} maxHeight="90vh" overflowY="scroll">
         <FlipMove>  
           {teams?.map((team) => {
             return (

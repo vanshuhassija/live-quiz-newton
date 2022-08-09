@@ -39,7 +39,7 @@ const Scoring = () => {
   return (
     <Stack>
       <Heading>Scoring</Heading>
-      <Box mt={4}>
+      <Box mt={4} maxHeight="90vh" overflowY="scroll">
         <FlipMove>
           {teams?.map((team) => {
             return (
